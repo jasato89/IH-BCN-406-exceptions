@@ -1,5 +1,5 @@
-DROP TABLE patient;
-DROP TABLE doctor;
+DROP TABLE IF EXISTS patient;
+DROP TABLE IF EXISTS doctor;
 
 CREATE TABLE `doctor` (
   `employee_id` varchar(255) NOT NULL,

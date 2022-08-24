@@ -3,6 +3,7 @@ package com.ironhack.lab44.service.impl;
 import com.ironhack.lab44.controller.dto.DoctorDTO;
 import com.ironhack.lab44.controller.dto.DoctorDepartmentDTO;
 import com.ironhack.lab44.controller.dto.DoctorStatusDTO;
+import com.ironhack.lab44.enums.EmployeeStatus;
 import com.ironhack.lab44.model.Doctor;
 import com.ironhack.lab44.repository.DoctorRepository;
 import com.ironhack.lab44.service.interfaces.IDoctorService;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -59,5 +61,21 @@ public class DoctorService implements IDoctorService {
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The employeeId doesn't exist.");
         }
+    }
+
+    @Override
+    public List<Doctor> search(Optional<EmployeeStatus> status, Optional<String> department) {
+        if (status.isPresent()) {
+            return doctorRepository.findByStatus(status.get());
+        } else if (department.isPresent()) {
+            return doctorRepository.findByDepartment(department.get());
+        } else {
+            return doctorRepository.findAll();
+        }
+    }
+
+    @Override
+    public Doctor findById(String id) {
+        return doctorRepository.findById(id).get();
     }
 }

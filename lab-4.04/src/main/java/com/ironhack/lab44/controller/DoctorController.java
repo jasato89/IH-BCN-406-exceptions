@@ -17,8 +17,6 @@ import java.util.Optional;
 
 @RestController
 public class DoctorController {
-    @Autowired
-    private DoctorRepository doctorRepository;
 
     @Autowired
     private IDoctorService doctorService;
@@ -26,19 +24,13 @@ public class DoctorController {
     @GetMapping("/doctors")
     @ResponseStatus(HttpStatus.OK)
     public List<Doctor> search(@RequestParam Optional<EmployeeStatus> status, @RequestParam Optional<String> department) {
-        if (status.isPresent()) {
-            return doctorRepository.findByStatus(status.get());
-        } else if (department.isPresent()) {
-            return doctorRepository.findByDepartment(department.get());
-        } else {
-            return doctorRepository.findAll();
-        }
+        return doctorService.search(status, department);
     }
 
     @GetMapping("/doctors/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Doctor findById(@PathVariable String id) {
-        return doctorRepository.findById(id).get();
+        return doctorService.findById(id);
     }
 
     @PostMapping("/doctors")
